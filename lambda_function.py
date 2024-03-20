@@ -22,7 +22,7 @@ def lambda_handler(event, context):
         s3_client.put_object(Bucket=output_bucket_name, Key="doordash-processed-file", Body=processed_json)
         message = "Input S3 File {} has been processed succesfuly !!".format("s3://"+bucket_name+"/"+s3_file_key)
         respone = sns_client.publish(Subject="SUCCESS - Daily Data Processing",TargetArn=sns_arn, Message=message, MessageStructure='text')
-    except:
+    except Exception as err:
         print(err)
         message = "Input S3 File {} processing is Failed !!".format("s3://"+bucket_name+"/"+s3_file_key)
         respone = sns_client.publish(Subject="FAILED - Daily Data Processing", TargetArn=sns_arn, Message=message, MessageStructure='text')
